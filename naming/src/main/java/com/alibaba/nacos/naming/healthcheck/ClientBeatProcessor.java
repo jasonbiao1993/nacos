@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Thread to update ephemeral instance triggered by client beat
- *
+ *  更新实例心跳信息
  * @author nkorange
  */
 public class ClientBeatProcessor implements Runnable {
@@ -77,9 +77,11 @@ public class ClientBeatProcessor implements Runnable {
                 if (Loggers.EVT_LOG.isDebugEnabled()) {
                     Loggers.EVT_LOG.debug("[CLIENT-BEAT] refresh beat: {}", rsInfo.toString());
                 }
+                // 更新心跳信息
                 instance.setLastBeat(System.currentTimeMillis());
                 if (!instance.isMarked()) {
                     if (!instance.isHealthy()) {
+                        // 更新健康状态
                         instance.setHealthy(true);
                         Loggers.EVT_LOG.info("service: {} {POS} {IP-ENABLED} valid: {}:{}@{}, region: {}, msg: client beat ok",
                             cluster.getService().getName(), ip, port, cluster.getName(), UtilsAndCommons.LOCALHOST_SITE);

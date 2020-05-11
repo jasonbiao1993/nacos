@@ -30,6 +30,9 @@ public class GlobalExecutor {
 
     public static final long TICK_PERIOD_MS = TimeUnit.MILLISECONDS.toMillis(500L);
 
+    /**
+     * nacos server 列表刷新间隔 5s
+     */
     private static final long NACOS_SERVER_LIST_REFRESH_INTERVAL = TimeUnit.SECONDS.toMillis(5);
 
     private static final long PARTITION_DATA_TIMED_SYNC_INTERVAL = TimeUnit.SECONDS.toMillis(5);

@@ -255,6 +255,12 @@ public class InstanceController {
         throw new NacosException(NacosException.NOT_FOUND, "no matched ip found!");
     }
 
+    /**
+     * 心跳
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @CanDistro
     @PutMapping("/beat")
     @Secured(parser = NamingResourceParser.class, action = ActionTypes.WRITE)
@@ -309,6 +315,7 @@ public class InstanceController {
             instance.setInstanceId(instance.getInstanceId());
             instance.setEphemeral(clientBeat.isEphemeral());
 
+            // 注册服务
             serviceManager.registerInstance(namespaceId, serviceName, instance);
         }
 
@@ -324,6 +331,8 @@ public class InstanceController {
             clientBeat.setPort(port);
             clientBeat.setCluster(clusterName);
         }
+
+        // 处理客户端心跳
         service.processClientBeat(clientBeat);
 
         result.put(CommonParams.CODE, NamingResponseCode.OK);
@@ -452,6 +461,7 @@ public class InstanceController {
         long cacheMillis = switchDomain.getDefaultCacheMillis();
 
         // now try to enable the push
+        // 尝试启动推送
         try {
             if (udpPort > 0 && pushService.canEnablePush(agent)) {
 

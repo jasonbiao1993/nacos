@@ -30,6 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author nkorange
  * @author jifengnan 2019-04-26
+ *
+ * 集群
  */
 public class Cluster extends com.alibaba.nacos.api.naming.pojo.Cluster implements Cloneable {
 

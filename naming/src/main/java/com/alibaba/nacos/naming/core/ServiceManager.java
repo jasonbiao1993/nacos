@@ -119,8 +119,10 @@ public class ServiceManager implements RecordListener<Service> {
     @PostConstruct
     public void init() {
 
+        // 服务上报
         UtilsAndCommons.SERVICE_SYNCHRONIZATION_EXECUTOR.schedule(new ServiceReporter(), 60000, TimeUnit.MILLISECONDS);
 
+        // 服务更新
         UtilsAndCommons.SERVICE_UPDATE_EXECUTOR.submit(new UpdatedServiceProcessor());
 
         if (emptyServiceAutoClean) {
@@ -260,6 +262,7 @@ public class ServiceManager implements RecordListener<Service> {
         @Override
         public void run() {
             try {
+                // 更新服务状态
                 updatedHealthStatus(namespaceId, serviceName, serverIP);
             } catch (Exception e) {
                 Loggers.SRV_LOG.warn("[DOMAIN-UPDATER] Exception while update service: {} from {}, error: {}",

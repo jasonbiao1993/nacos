@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Consistency delegate
- *
+ * 代理一致协议，判断是否持久化
  * @author nkorange
  * @since 1.0.0
  */

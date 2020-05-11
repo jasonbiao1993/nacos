@@ -48,7 +48,7 @@ import java.util.Map;
 
 /**
  * Methods for Raft consistency protocol. These methods should only be invoked by Nacos server itself.
- *
+ * Raft一致性协议的方法。这些方法只能由Nacos服务器本身调用。
  * @author nkorange
  * @since 1.0.0
  */
@@ -66,6 +66,13 @@ public class RaftController {
     @Autowired
     private RaftCore raftCore;
 
+    /**
+     * 投票
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/vote")
     public JSONObject vote(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -75,6 +82,13 @@ public class RaftController {
         return JSON.parseObject(JSON.toJSONString(peer));
     }
 
+    /**
+     * 心跳
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/beat")
     public JSONObject beat(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -109,6 +123,13 @@ public class RaftController {
         return JSON.parseObject(JSON.toJSONString(peer));
     }
 
+    /**
+     * 数据重载
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @PutMapping("/datum/reload")
     public String reloadDatum(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String key = WebUtils.required(request, "key");
@@ -116,6 +137,13 @@ public class RaftController {
         return "ok";
     }
 
+    /**
+     * follower 转发请求到leader增加数据
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/datum")
     public String publish(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -146,6 +174,13 @@ public class RaftController {
         throw new NacosException(NacosException.INVALID_PARAM, "unknown type publish key: " + key);
     }
 
+    /**
+     * follower 转发请求到leader 删除数据
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @DeleteMapping("/datum")
     public String delete(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -168,6 +203,7 @@ public class RaftController {
         List<Datum> datums = new ArrayList<Datum>();
 
         for (String key : keys) {
+            // 获取数据
             Datum datum = raftCore.getDatum(key);
             datums.add(datum);
         }
@@ -189,6 +225,13 @@ public class RaftController {
         return result;
     }
 
+    /**
+     * leader 提交数据到follower
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/datum/commit")
     public String onPublish(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -220,6 +263,13 @@ public class RaftController {
         return "ok";
     }
 
+    /**
+     * leader 删除数据到follower
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @DeleteMapping("/datum/commit")
     public String onDelete(HttpServletRequest request, HttpServletResponse response) throws Exception {
 

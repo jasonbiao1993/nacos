@@ -34,6 +34,8 @@ import static com.alibaba.nacos.config.server.utils.LogUtil.fatalLog;
 /**
  * Role CRUD service
  *
+ * 角色持久化服务
+ *
  * @author nkorange
  * @since 1.2.0
  */

@@ -60,8 +60,14 @@ public class SwitchDomain implements Record, Cloneable {
 
     private List<String> incrementalList = new ArrayList<>();
 
+    /**
+     *  server 状态同步周期，2s
+     */
     private long serverStatusSynchronizationPeriodMillis = TimeUnit.SECONDS.toMillis(2);
 
+    /**
+     *  service 状态同步周期，5s
+     */
     private long serviceStatusSynchronizationPeriodMillis = TimeUnit.SECONDS.toMillis(5);
 
     private boolean disableAddIP = false;

@@ -34,7 +34,7 @@ import static com.alibaba.nacos.core.utils.SystemUtils.*;
 
 /**
  * The manager to globally refresh and operate server list.
- *
+ * 管理器以全局刷新和操作服务器列表。
  * @author nkorange
  * @since 1.0.0
  */
@@ -72,7 +72,9 @@ public class ServerListManager {
 
     @PostConstruct
     public void init() {
+        // 周期执行server列表刷新，5S
         GlobalExecutor.registerServerListUpdater(new ServerListUpdater());
+        // 状态上报，延时2000ms执行，
         GlobalExecutor.registerServerStatusReporter(new ServerStatusReporter(), 2000);
     }
 
@@ -367,6 +369,7 @@ public class ServerListManager {
             } catch (Exception e) {
                 Loggers.SRV_LOG.error("[SERVER-STATUS] Exception while sending server status", e);
             } finally {
+                // 周期同步server 状态
                 GlobalExecutor.registerServerStatusReporter(this, switchDomain.getServerStatusSynchronizationPeriodMillis());
             }
 

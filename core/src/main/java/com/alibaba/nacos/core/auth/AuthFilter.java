@@ -32,7 +32,7 @@ import java.net.URI;
 
 /**
  * Unified filter to handle authentication and authorization
- *
+ *  授权过滤器
  * @author nkorange
  * @since 1.2.0
  */

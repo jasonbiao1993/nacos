@@ -30,6 +30,8 @@ import org.springframework.stereotype.Component;
 /**
  * Auth related configurations
  *
+ * 授权配置
+ *
  * @author nkorange
  * @since 1.2.0
  */

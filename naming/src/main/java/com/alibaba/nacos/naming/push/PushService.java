@@ -48,6 +48,9 @@ import java.util.zip.GZIPOutputStream;
 
 /**
  * @author nacos
+ *
+ * 推送服务
+ * 推送实例信息到客服端
  */
 @Component
 public class PushService implements ApplicationContextAware, ApplicationListener<ServiceChangeEvent> {
@@ -115,6 +118,7 @@ public class PushService implements ApplicationContextAware, ApplicationListener
                 @Override
                 public void run() {
                     try {
+                        // 移除客服端僵尸进程
                         removeClientIfZombie();
                     } catch (Throwable e) {
                         Loggers.PUSH.warn("[NACOS-PUSH] failed to remove client zombie");
@@ -428,6 +432,10 @@ public class PushService implements ApplicationContextAware, ApplicationListener
             return dataSource;
         }
 
+        /**
+         * 是否为僵尸进程
+         * @return
+         */
         public boolean zombie() {
             return System.currentTimeMillis() - lastRefTime > switchDomain.getPushCacheMillis(serviceName);
         }
@@ -670,6 +678,7 @@ public class PushService implements ApplicationContextAware, ApplicationListener
                     Loggers.PUSH.info("received ack: {} from: {}:{}, cost: {} ms, unacked: {}, total push: {}",
                         json, ip, port, pushCost, ackMap.size(), totalPush);
 
+                    // push 花费的时间
                     pushCostMap.put(ackKey, pushCost);
 
                     udpSendTimeMap.remove(ackKey);

@@ -29,12 +29,21 @@ public class RaftPeer {
 
     public String ip;
 
+    /**
+     * 投票ip
+     */
     public String voteFor;
 
     public AtomicLong term = new AtomicLong(0L);
 
+    /**
+     * leader 销往 时间 默认 15s
+     */
     public volatile long leaderDueMs = RandomUtils.nextLong(0, GlobalExecutor.LEADER_TIMEOUT_MS);
 
+    /**
+     * 心跳到期实现 默认5s
+     */
     public volatile long heartbeatDueMs = RandomUtils.nextLong(0, GlobalExecutor.HEARTBEAT_INTERVAL_MS);
 
     public State state = State.FOLLOWER;

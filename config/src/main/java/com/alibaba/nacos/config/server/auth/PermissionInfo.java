@@ -18,6 +18,7 @@ package com.alibaba.nacos.config.server.auth;
 /**
  * @author nkorange
  * @since 1.2.0
+ * 权限信息
  */
 public class PermissionInfo {
 

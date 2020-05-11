@@ -26,6 +26,7 @@ public interface RecordListener<T extends Record> {
 
     /**
      * Determine if the listener was registered with this key
+     * 确认监听是否要注册这个key
      *
      * @param key candidate key
      * @return true if the listener was registered with this key
@@ -34,7 +35,7 @@ public interface RecordListener<T extends Record> {
 
     /**
      * Determine if the listener is to be removed by matching the 'key'
-     *
+     * 确认监听是否应该移除这个key
      * @param key key to match
      * @return true if match success
      */

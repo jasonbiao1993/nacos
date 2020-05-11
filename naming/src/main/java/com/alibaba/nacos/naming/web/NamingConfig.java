@@ -21,6 +21,8 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author nkorange
+ * Naming 配置
+ * 1. 过滤器配置
  */
 @Configuration
 public class NamingConfig {

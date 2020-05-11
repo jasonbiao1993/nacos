@@ -32,6 +32,8 @@ import java.util.regex.Pattern;
 /**
  * IP under service
  *
+ * 服务中的实例
+ *
  * @author nkorange
  */
 public class Instance extends com.alibaba.nacos.api.naming.pojo.Instance implements Comparable {

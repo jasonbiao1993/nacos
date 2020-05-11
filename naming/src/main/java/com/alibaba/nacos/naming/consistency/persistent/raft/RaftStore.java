@@ -59,6 +59,7 @@ public class RaftStore {
 
         Datum datum;
         long start = System.currentTimeMillis();
+        // 加载缓存
         for (File cache : listCaches()) {
             if (cache.isDirectory() && cache.listFiles() != null) {
                 for (File datumFile : cache.listFiles()) {
@@ -238,6 +239,7 @@ public class RaftStore {
         }
 
         // remove old format file:
+        // 删除旧格式文件
         if (StringUtils.isNoneBlank(namespaceId)) {
             if (datum.key.contains(Constants.DEFAULT_GROUP + Constants.SERVICE_INFO_SPLITER)) {
                 String oldFormatKey =

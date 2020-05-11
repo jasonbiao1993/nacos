@@ -18,6 +18,8 @@ package com.alibaba.nacos.config.server.auth;
 /**
  * Role Info
  *
+ * 角色信息
+ *
  * @author nkorange
  * @since 1.2.0
  */

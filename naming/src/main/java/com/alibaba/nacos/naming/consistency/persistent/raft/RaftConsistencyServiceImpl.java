@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Use simplified Raft protocol to maintain the consistency status of Nacos cluster.
- *
+ * 使用简化的Raft协议来维护Nacos群集的一致性状态。
  * @author nkorange
  * @since 1.0.0
  */
@@ -45,6 +45,12 @@ public class RaftConsistencyServiceImpl implements PersistentConsistencyService 
     @Autowired
     private SwitchDomain switchDomain;
 
+    /**
+     * 该方法只能leader节点 调用
+     * @param key   key of data, this key should be globally unique
+     * @param value value of data
+     * @throws NacosException
+     */
     @Override
     public void put(String key, Record value) throws NacosException {
         try {
@@ -55,6 +61,11 @@ public class RaftConsistencyServiceImpl implements PersistentConsistencyService 
         }
     }
 
+    /**
+     * 该方法只能leader节点 调用
+     * @param key key of data
+     * @throws NacosException
+     */
     @Override
     public void remove(String key) throws NacosException {
         try {

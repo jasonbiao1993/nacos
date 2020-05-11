@@ -57,10 +57,20 @@ public class RaftPeerSet implements ServerChangeListener, ApplicationContextAwar
 
     private AtomicLong localTerm = new AtomicLong(0L);
 
+    /**
+     * 领导者
+     */
     private RaftPeer leader = null;
 
+    /**
+     * 所有的机器 leader follower candidate
+     * ip -> RaftPeer
+     */
     private Map<String, RaftPeer> peers = new HashMap<>();
 
+    /**
+     * site 集合
+     */
     private Set<String> sites = new HashSet<>();
 
     private boolean ready = false;
@@ -140,6 +150,11 @@ public class RaftPeerSet implements ServerChangeListener, ApplicationContextAwar
         return peers.size();
     }
 
+    /**
+     * 确定是否成为leader
+     * @param candidate 候选人
+     * @return 领导者
+     */
     public RaftPeer decideLeader(RaftPeer candidate) {
         peers.put(candidate.ip, candidate);
 
@@ -172,9 +187,16 @@ public class RaftPeerSet implements ServerChangeListener, ApplicationContextAwar
         return leader;
     }
 
+    /**
+     * 标记成leader
+     * @param candidate
+     * @return
+     */
     public RaftPeer makeLeader(RaftPeer candidate) {
         if (!Objects.equals(leader, candidate)) {
             leader = candidate;
+
+            // 发布标记成领导者事件
             applicationContext.publishEvent(new MakeLeaderEvent(this, leader));
             Loggers.RAFT.info("{} has become the LEADER, local: {}, leader: {}",
                 leader.ip, JSON.toJSONString(local()), JSON.toJSONString(leader));
@@ -210,6 +232,9 @@ public class RaftPeerSet implements ServerChangeListener, ApplicationContextAwar
         return update(candidate);
     }
 
+    /**
+     * @return 返回本机RaftPeer
+     */
     public RaftPeer local() {
         RaftPeer peer = peers.get(NetUtils.localServer());
         if (peer == null && SystemUtils.STANDALONE_MODE) {
@@ -227,14 +252,24 @@ public class RaftPeerSet implements ServerChangeListener, ApplicationContextAwar
         return peer;
     }
 
+    /**
+     * @param server 服务ip
+     * @return RaftPeer
+     */
     public RaftPeer get(String server) {
         return peers.get(server);
     }
 
+    /**
+     * @return 多数数量
+     */
     public int majorityCount() {
         return peers.size() / 2 + 1;
     }
 
+    /**
+     * 复位
+     */
     public void reset() {
 
         leader = null;
@@ -256,17 +291,23 @@ public class RaftPeerSet implements ServerChangeListener, ApplicationContextAwar
         return peers.containsKey(remote.ip);
     }
 
+    /**
+     * 在cluster server 发生改变
+     * @param latestMembers 新的服务列表
+     */
     @Override
     public void onChangeServerList(List<Server> latestMembers) {
 
         Map<String, RaftPeer> tmpPeers = new HashMap<>(8);
         for (Server member : latestMembers) {
 
+            // 存在，使用存在的
             if (peers.containsKey(member.getKey())) {
                 tmpPeers.put(member.getKey(), peers.get(member.getKey()));
                 continue;
             }
 
+            // 不存在新建
             RaftPeer raftPeer = new RaftPeer();
             raftPeer.ip = member.getKey();
 
@@ -279,6 +320,7 @@ public class RaftPeerSet implements ServerChangeListener, ApplicationContextAwar
         }
 
         // replace raft peer set:
+        // 替换对等服务
         peers = tmpPeers;
 
         if (RunningConfig.getServerPort() > 0) {
