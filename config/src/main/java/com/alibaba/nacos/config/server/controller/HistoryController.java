@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  * 管理控制器。
  *
  * @author Nacos
+ * config 历史配置查询
  */
 @RestController
 @RequestMapping(Constants.HISTORY_CONTROLLER_PATH)

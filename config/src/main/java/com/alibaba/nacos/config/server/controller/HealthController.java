@@ -31,6 +31,8 @@ import static com.alibaba.nacos.core.utils.SystemUtils.LOCAL_IP;
 /**
  * health service
  *
+ * 健康检查服务
+ *
  * @author Nacos
  */
 @RestController

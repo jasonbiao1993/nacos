@@ -74,6 +74,7 @@ public class SystemUtils {
 
     /**
      * The file path of cluster conf.
+     * 获取cluster 列表
      */
     public static final String CLUSTER_CONF_FILE_PATH = getClusterConfFilePath();
 
